@@ -1,0 +1,132 @@
+[
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/tensor.cpp.o -c /home/guohaojie/Guo/mini-infer/src/tensor.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/tensor.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/context.cpp.o -c /home/guohaojie/Guo/mini-infer/src/context.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/context.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/gguf.cpp.o -c /home/guohaojie/Guo/mini-infer/src/gguf.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/gguf.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/graph.cpp.o -c /home/guohaojie/Guo/mini-infer/src/graph.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/graph.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/gallocr.cpp.o -c /home/guohaojie/Guo/mini-infer/src/gallocr.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/gallocr.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/ops_cpu.cpp.o -c /home/guohaojie/Guo/mini-infer/src/ops_cpu.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/ops_cpu.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/threadpool.cpp.o -c /home/guohaojie/Guo/mini-infer/src/threadpool.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/threadpool.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/quant.cpp.o -c /home/guohaojie/Guo/mini-infer/src/quant.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/quant.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/quant_avx2.cpp.o -c /home/guohaojie/Guo/mini-infer/src/quant_avx2.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/quant_avx2.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer_core.dir/src/model_qwen2.cpp.o -c /home/guohaojie/Guo/mini-infer/src/model_qwen2.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/model_qwen2.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mini_infer.dir/src/main.cpp.o -c /home/guohaojie/Guo/mini-infer/src/main.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/src/main.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_tensor.dir/test_tensor.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_tensor.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_tensor.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_context.dir/test_context.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_context.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_context.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++ -DMI_FIXTURE_DIR=\\\"/home/guohaojie/Guo/mini-infer/tests/fixtures\\\" -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_gguf.dir/test_gguf.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_gguf.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_gguf.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++ -DMI_FIXTURE_DIR=\\\"/home/guohaojie/Guo/mini-infer/tests/fixtures\\\" -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_graph.dir/test_graph.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_graph.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_graph.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_gallocr.dir/test_gallocr.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_gallocr.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_gallocr.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_ops_cpu.dir/test_ops_cpu.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_ops_cpu.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_ops_cpu.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_threadpool.dir/test_threadpool.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_threadpool.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_threadpool.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_quant.dir/test_quant.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_quant.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_quant.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++ -DMI_FIXTURE_DIR=\\\"/home/guohaojie/Guo/mini-infer/tests/fixtures\\\" -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_model_qwen2.dir/test_model_qwen2.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_model_qwen2.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_model_qwen2.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tests",
+  "command": "/usr/bin/c++ -DMI_FIXTURE_DIR=\\\"/home/guohaojie/Guo/mini-infer/tests/fixtures\\\" -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/test_zero_alloc.dir/test_zero_alloc.cpp.o -c /home/guohaojie/Guo/mini-infer/tests/test_zero_alloc.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tests/test_zero_alloc.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tools",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/mi_dump.dir/dump.cpp.o -c /home/guohaojie/Guo/mini-infer/tools/dump.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tools/dump.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tools",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/src -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/bench_matvec.dir/bench_matvec.cpp.o -c /home/guohaojie/Guo/mini-infer/tools/bench_matvec.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tools/bench_matvec.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tools",
+  "command": "/usr/bin/c++   -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/bench_memcpy.dir/bench_memcpy.cpp.o -c /home/guohaojie/Guo/mini-infer/tools/bench_memcpy.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tools/bench_memcpy.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tools",
+  "command": "/usr/bin/c++   -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/bench_memread.dir/bench_memread.cpp.o -c /home/guohaojie/Guo/mini-infer/tools/bench_memread.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tools/bench_memread.cpp"
+},
+{
+  "directory": "/home/guohaojie/Guo/mini-infer/build-debug/tools",
+  "command": "/usr/bin/c++  -I/home/guohaojie/Guo/mini-infer/../mini-llama.cpp/third_party/llama.cpp/include -I/home/guohaojie/Guo/mini-infer/../mini-llama.cpp/third_party/llama.cpp/ggml/include -O0 -g -Wall -Wextra -std=gnu++17 -o CMakeFiles/llama_logits.dir/llama_logits.cpp.o -c /home/guohaojie/Guo/mini-infer/tools/llama_logits.cpp",
+  "file": "/home/guohaojie/Guo/mini-infer/tools/llama_logits.cpp"
+}
+]

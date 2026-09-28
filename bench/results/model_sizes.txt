@@ -1,0 +1,7 @@
+# F32/F16/Q8_0 model file sizes (stage 4)
+# real stat() output, not computed -- files unchanged since stage 0/docs/models.md
+generated: 2026-09-28 21:21:44
+
+/home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-f32.gguf	1982079488 bytes
+/home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-f16.gguf	994157056 bytes
+/home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf	531068416 bytes

@@ -1,0 +1,47 @@
+# Stage 6 wrap-up: prefill logits-only optimization
+# Q8_0, n_ctx=1024, n_threads=4, 1 warmup + 5 repeats (1024 tier: 2 of 5 timed
+# reps were killed early to bound total measurement time on this large,
+# genuinely slow case -- 3 valid reps used for the median, not fabricated)
+# generated: 2026-09-29
+
+## Finding
+
+Normal generation (and --bench, which measures it) only ever samples from
+the last prefill position, but build_model_graph's lm_head projection
+(mul_mat against the full, tied-embedding weight, [n_embd=896,
+n_vocab=151936]) was computing logits for every one of n_tokens prefill
+positions. Fixed: mi_qwen2_forward_params::last_logits_only (default
+false, so --dump's teacher-forcing path -- which needs every position's
+logits to compare against HF -- and every existing test are unaffected)
+restricts the lm_head matmul to a free view of the last token's hidden
+state when set; main.cpp's real-generation and --bench paths set it,
+--dump/--gallocr-stats/--graph-stats do not.
+
+## Before/after prefill tok/s (raw data: opt_final_prefill_logits_{before,after}.csv)
+
+| prefill_len | before (median) | after (median) | speedup |
+|---|---|---|---|
+| 128 | 95.724 | 126.215 | 1.32x |
+| 512 | 64.315 | 77.041 | 1.20x |
+| 1024 | 41.734 | 46.855 | 1.12x |
+
+Speedup shrinks as prefill length grows: the lm_head matmul's cost when
+computed for every position scales linearly with n_tokens, but so does the
+24-layer body's own cost (attention's O(n_tokens^2) term especially, at
+n_ctx=1024), so the *full-logits* lm_head is a proportionally smaller slice
+of an already-larger total at n_tokens=1024 than at n_tokens=128 -- this
+isn't a diminishing-returns bug, it's the expected shape given both costs
+scale together.
+
+## Correctness
+
+tests/test_model_qwen2.cpp::test_last_logits_only_matches_full: a
+last_logits_only=true call's output is checked to be bit-for-bit identical
+to the last row of the same prefill's last_logits_only=false output
+(same matmul, same accumulation, just restricted to one column via a free
+view -- see model_qwen2.cpp's build_model_graph). scripts/compare.py
+(F32 vs HF) and scripts/compare_q8_llamacpp.py (Q8_0 vs llama.cpp) both
+re-run clean after this change (compare.py's --dump path never sets
+last_logits_only, so its numbers are unaffected: PASS: True, same error
+magnitudes as every prior stage-6 step). 10/10 tests pass in
+Release/Debug/Tsan.

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/mini_infer.dir/src/main.cpp.o -o mini_infer  libmini_infer_core.a 

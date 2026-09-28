@@ -1,0 +1,1 @@
+/usr/bin/c++ -O1 -g -fsanitize=thread -fno-omit-frame-pointer -fsanitize=thread CMakeFiles/bench_memread.dir/bench_memread.cpp.o -o bench_memread 

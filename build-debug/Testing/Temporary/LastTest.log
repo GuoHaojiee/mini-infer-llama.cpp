@@ -1,0 +1,154 @@
+Start testing: Sep 29 01:13 CST
+----------------------------------------------------------
+1/10 Testing: tensor
+1/10 Test: tensor
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_tensor"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"tensor" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"tensor" end time: Sep 29 01:13 CST
+"tensor" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/10 Testing: context
+2/10 Test: context
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_context"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"context" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"context" end time: Sep 29 01:13 CST
+"context" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/10 Testing: gguf
+3/10 Test: gguf
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_gguf"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"gguf" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"gguf" end time: Sep 29 01:13 CST
+"gguf" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/10 Testing: graph
+4/10 Test: graph
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_graph"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"graph" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"graph" end time: Sep 29 01:13 CST
+"graph" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/10 Testing: gallocr
+5/10 Test: gallocr
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_gallocr"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"gallocr" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"gallocr" end time: Sep 29 01:13 CST
+"gallocr" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/10 Testing: ops_cpu
+6/10 Test: ops_cpu
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_ops_cpu"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"ops_cpu" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ops_cpu" end time: Sep 29 01:13 CST
+"ops_cpu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/10 Testing: threadpool
+7/10 Test: threadpool
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_threadpool"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"threadpool" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"threadpool" end time: Sep 29 01:13 CST
+"threadpool" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/10 Testing: quant
+8/10 Test: quant
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_quant"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"quant" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"quant" end time: Sep 29 01:13 CST
+"quant" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/10 Testing: model_qwen2
+9/10 Test: model_qwen2
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_model_qwen2"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"model_qwen2" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"model_qwen2" end time: Sep 29 01:13 CST
+"model_qwen2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/10 Testing: zero_alloc
+10/10 Test: zero_alloc
+Command: "/home/guohaojie/Guo/mini-infer/build-debug/tests/test_zero_alloc"
+Directory: /home/guohaojie/Guo/mini-infer/build-debug/tests
+"zero_alloc" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+after reserve()+warmup, 64 decode steps: new=0 delete=0 malloc=0 free=0
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"zero_alloc" end time: Sep 29 01:13 CST
+"zero_alloc" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 29 01:13 CST

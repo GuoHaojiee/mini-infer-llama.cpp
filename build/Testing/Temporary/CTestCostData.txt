@@ -1,0 +1,11 @@
+tensor 30 4.79306e-05
+context 30 3.65183e-05
+gguf 30 6.21645e-05
+graph 30 7.82026e-05
+gallocr 30 6.14265e-05
+ops_cpu 30 5.91427e-05
+threadpool 30 0.000269981
+quant 30 6.63108e-05
+model_qwen2 30 9.4916e-05
+zero_alloc 26 9.88916e-05
+---

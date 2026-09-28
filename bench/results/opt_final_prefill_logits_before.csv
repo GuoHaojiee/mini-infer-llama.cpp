@@ -1,0 +1,19 @@
+# Stage 6 wrap-up: prefill speed BEFORE last_logits_only (temporary A/B baseline build)
+# Q8_0, n_ctx=1024, n_threads=4, 1 warmup + 5 repeats
+# generated: 2026-09-29 01:04:59
+prefill_len,rep,prefill_tok_per_s
+128,1,96.087
+128,2,95.562
+128,3,95.836
+128,4,95.508
+128,5,95.724
+512,1,64.315
+512,2,64.460
+512,3,64.268
+512,4,64.426
+512,5,64.276
+1024,1,41.734
+1024,2,41.816
+1024,3,
+1024,4,
+1024,5,41.563

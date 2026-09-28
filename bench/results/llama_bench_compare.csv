@@ -1,0 +1,24 @@
+# mini-infer vs llama.cpp (llama-bench), same Q8_0 GGUF, same prompt/gen length
+# model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+# n_ctx: 64 prompt_len: 16 decode_len: 8
+# mini-infer: median of 1 warmup + 5 repeats (this project's own --bench)
+# llama.cpp: llama-bench's own avg of 5 repeats (-r 5); 'center' column holds median for mini-infer and avg for llama.cpp -- not the same
+# statistic, reported side by side as each tool natively provides it, not normalized
+# generated: 2026-09-29 00:34:13
+engine,phase,n_threads,stat_kind,center_tok_per_s,low,high
+mini-infer,prefill,1,median,46.5360,45.9610,47.0860
+mini-infer,decode,1,median,37.0330,34.2340,37.0490
+llama.cpp,prefill,1,avg,99.4614,98.5879,100.3350
+llama.cpp,decode,1,avg,36.7833,36.2686,37.2979
+mini-infer,prefill,3,median,83.6620,81.5520,83.9110
+mini-infer,decode,3,median,58.3750,56.9410,58.6030
+llama.cpp,prefill,3,avg,274.9363,272.5439,277.3287
+llama.cpp,decode,3,avg,67.6690,65.1607,70.1772
+mini-infer,prefill,4,median,107.8250,107.6730,108.1040
+mini-infer,decode,4,median,64.4660,63.5380,65.0250
+llama.cpp,prefill,4,avg,358.6767,355.1235,362.2299
+llama.cpp,decode,4,avg,72.5250,69.9122,75.1379
+mini-infer,prefill,6,median,145.7250,143.9240,146.1410
+mini-infer,decode,6,median,62.7890,61.7830,63.8300
+llama.cpp,prefill,6,avg,480.2642,473.9730,486.5553
+llama.cpp,decode,6,avg,70.4310,66.5397,74.3224

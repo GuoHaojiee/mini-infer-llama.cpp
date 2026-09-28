@@ -1,0 +1,27 @@
+# gallocr peak-vs-baseline (stage 2b; stage 6 added no_bestfit_MB and theoretical_min_MB)
+model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+n_ctx: 1024
+generated: 2026-09-29 00:54:10
+
+All numbers are from mi_gallocr_get_stats() / mi_gallocr_theoretical_min_bytes() after an
+actual mi_gallocr_alloc_graph() call on the real model (never estimated).
+  peak_MB: gallocr arena bytes actually used for that call (best-fit + in-place, the
+           configuration mini_infer actually runs with).
+  baseline_MB: sum of each intermediate tensor's own size as if independently allocated
+               (no reuse at all) -- i.e. what stage 2a would have used.
+  no_bestfit_MB: GALLOCR_NO_BESTFIT=1 -- refcounted free-after-last-use still happens,
+                 but a freed block is never reused for a *different* tensor (only
+                 in-place elimination, a separate mechanism, still applies).
+  theoretical_min_MB: pure liveness bound (see gallocr.h's mi_gallocr_theoretical_min_bytes
+                      doc comment) -- max over topological positions of the sum of live
+                      non-view tensor sizes at that position. Does NOT credit in-place
+                      elimination, so it can come out *above* peak_MB when many ops are
+                      in-place-eligible (peak_MB benefits from a technique this bound
+                      deliberately excludes) -- not a bug, see the two numbers side by side.
+
+case                   n_tokens   n_past    peak_MB  no_bestfit_MB  theoretical_min_MB  baseline_MB  n_inplace  n_bestfit
+prefill n=128               128        0      7.061        259.451               7.562      429.826        218        427
+prefill n=512               512        0     33.742       1541.805              30.250     2223.305        218        428
+prefill n=1024             1024        0    123.484       4427.609             115.500     5790.609        218        428
+decode n_past=0               1        0      0.048          1.701               0.059        3.032        218        428
+decode n_past=1023            1     1023      0.121          4.324               0.113        5.655        218        428

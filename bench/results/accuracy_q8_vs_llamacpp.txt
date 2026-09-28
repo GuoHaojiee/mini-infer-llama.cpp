@@ -1,0 +1,13 @@
+# Q8_0 vs llama.cpp accuracy (stage 4)
+model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+token sequence length: 416
+token sequence source: tokenized (via Qwen/Qwen2.5-0.5B-Instruct's tokenizer, transformers.AutoTokenizer) from a fixed English description of this project, repeated until >= 256 tokens
+generated: 2026-09-29 01:01:05
+
+Comparison method: teacher forcing, same token sequence fed to both engines on the same Q8_0 GGUF; logits compared position by position (SPEC.md's 对拍标准 for Q8_0 vs llama.cpp: top-1 agreement rate, cosine similarity, max absolute error -- bit-exactness is not required).
+
+top1_agreement_rate: 0.983173  (409/416 positions)
+cosine_similarity_mean: 0.999467
+cosine_similarity_min:  0.997556
+max_abs_error: 0.986804
+mean_abs_error: 0.086579

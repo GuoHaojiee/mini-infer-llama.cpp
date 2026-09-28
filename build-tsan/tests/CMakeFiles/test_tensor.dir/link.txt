@@ -1,0 +1,1 @@
+/usr/bin/c++ -O1 -g -fsanitize=thread -fno-omit-frame-pointer -fsanitize=thread CMakeFiles/test_tensor.dir/test_tensor.cpp.o -o test_tensor  ../libmini_infer_core.a 

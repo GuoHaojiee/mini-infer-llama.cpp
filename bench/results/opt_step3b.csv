@@ -1,0 +1,24 @@
+# Stage 6 step 3b decode tok/s (batched multi-head attention), Q8_0, n_ctx=64, prompt_len=16, decode_len=8
+# 1 warmup + 5 repeats per thread count, mini_infer --bench (in-process timing)
+# generated: 2026-09-29 00:25:56
+config,n_threads,rep,tok_per_s
+Q8_0_avx2_step3b,1,1,36.533
+Q8_0_avx2_step3b,1,2,36.640
+Q8_0_avx2_step3b,1,3,36.474
+Q8_0_avx2_step3b,1,4,36.329
+Q8_0_avx2_step3b,1,5,36.420
+Q8_0_avx2_step3b,3,1,56.677
+Q8_0_avx2_step3b,3,2,57.053
+Q8_0_avx2_step3b,3,3,54.752
+Q8_0_avx2_step3b,3,4,56.922
+Q8_0_avx2_step3b,3,5,57.392
+Q8_0_avx2_step3b,4,1,63.370
+Q8_0_avx2_step3b,4,2,63.421
+Q8_0_avx2_step3b,4,3,61.666
+Q8_0_avx2_step3b,4,4,63.333
+Q8_0_avx2_step3b,4,5,62.943
+Q8_0_avx2_step3b,6,1,60.753
+Q8_0_avx2_step3b,6,2,61.213
+Q8_0_avx2_step3b,6,3,61.348
+Q8_0_avx2_step3b,6,4,59.883
+Q8_0_avx2_step3b,6,5,62.032

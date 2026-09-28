@@ -1,0 +1,164 @@
+# Stage 6 step 1: Q8_0 AVX2 dot product rewrite. Same machine as step 0
+# (AMD Ryzen 5 5600H, 6C/12T, dual-channel DDR4), g++ 11.4.0, -O3 Release.
+# Generated: 2026-09-29, this session. Model:
+# /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+
+## What changed (see docs/stage6.md for the full explanation)
+
+1. Weight scale conversion: hardware F16C (vcvtph2ps), defined in
+   quant_avx2.cpp with a matching target attribute so it actually inlines
+   into the caller (verified by objdump below) -- no more per-block
+   function call. Falls back to a 65536-entry lookup table
+   (mi_fp16_to_fp32_lut) on a hypothetical AVX2-without-F16C machine.
+2. Activation-side quantization stores the scale as a plain float
+   (block_q8_0_act, new MI_TYPE_Q8_0_ACT tensor type) instead of round-
+   tripping through fp16 -- mul_mat's Q8_0 path now dots a block_q8_0
+   weight row against a block_q8_0_act activation row, so there is only
+   ONE fp16->fp32 conversion per block left (the weight's), not two.
+3. Row-level accumulation: one __m256 accumulator for the whole row; each
+   block's 8 int32 partial sums (not horizontally reduced) are converted to
+   float, scaled by that block's dx*dy, and FMA-accumulated lane-wise; a
+   single hsum_ps combines the 8 lanes once, at the end of the row, not
+   once per block.
+
+mi_vec_dot_q8_0_q8_0 (both operands block_q8_0, fp16 scale) is kept,
+identically optimized, purely because tests/test_quant.cpp exercises it
+directly; mul_mat itself now calls mi_vec_dot_q8_0_wact instead (see
+quant.h's doc comments).
+
+## 1. perf record -g, single-thread Q8_0 decode (same command as step 0)
+
+Top 12 by self time:
+
+    68.13%  mi_vec_dot_q8_0_wact_avx2_f16c(block_q8_0 const*, block_q8_0_act const*, long)
+    13.86%  mi_compute_mul_mat(mi_tensor*, int, int)
+     3.52%  (anonymous namespace)::visit(mi_cgraph*, mi_tensor*)
+     2.01%  mi_vec_dot_q8_0_wact_avx2(block_q8_0 const*, block_q8_0_act const*, long)
+     1.96%  mi_vec_dot_q8_0_wact(block_q8_0 const*, block_q8_0_act const*, long)
+     1.59%  mi_quantize_row_q8_0_act(float const*, block_q8_0_act*, long)
+     1.00%  __expf_fma
+     0.60%  mi_graph_build_forward_expand(mi_cgraph*, mi_tensor*)
+     0.54%  __llrintf
+     0.51%  mi_compute_silu(mi_tensor*, int, int)
+     0.38%  __powf_fma
+     0.30%  ew_binop<mi_compute_mul(...)::{lambda}> (the elementwise mul kernel)
+
+mi_fp16_to_fp32 no longer appears in the profile at all (step 0: 46.37%,
+the single largest entry). mul_mat's family (the AVX2 kernel + its two
+thin wrappers + mi_compute_mul_mat) is now 68.13+13.86+2.01+1.96=85.96% of
+samples (step 0: 93.74%) -- a smaller share of a much shorter total run
+(see tok/s below), and every non-mul_mat op is still comfortably under the
+5% threshold.
+
+## 2. objdump: mi_vec_dot_q8_0_wact_avx2_f16c (the new hot function)
+
+  objdump -d --no-show-raw-insn -C build/.../quant_avx2.cpp.o
+
+  - 0 `call` instructions in the entire function body (step 0's
+    mi_vec_dot_q8_0_q8_0_avx2 had 2 per block).
+  - 1 `vcvtph2ps` instruction, inlined directly into the per-block loop
+    (confirms the F16C conversion is now a single hardware instruction, not
+    a function call).
+  - Horizontal sum (vmovaps/vextractf128/vaddps/vmovshdup/vaddps/vmovhlps/
+    vaddss) appears exactly once, after the loop -- not per block.
+  - Full per-block loop body, straight line, no calls:
+      vmovdqu (load weight qs) / movzwl (load weight d, 2 bytes)
+      vmovdqu (load activation qs+float d together, 4-byte aligned)
+      vpsignb x2, vpmaddubsw, vpmaddwd   (int8 dot -> 8x int32, stage 4's technique)
+      vcvtdq2ps                          (8x int32 -> 8x float)
+      vmovd + vcvtph2ps + vmulss         (weight fp16 scale -> float, x activation's float scale)
+      vbroadcastss + vfmadd231ps         (row accumulator update)
+
+## 3. Microbenchmark: Q8_0 weight x activation matrix-vector, k=4864 n=896, 1000 iters
+
+  $ build/tools/bench_matvec 4864 896 1000
+  mode=L3-resident  effective_GBps=30.6817  effective_GFLOPs=57.7538
+  mode=DRAM (58 independent 4.6MB matrices, ~256MB footprint)  effective_GBps=21.7390  effective_GFLOPs=40.9205
+
+  $ MI_QUANT_FORCE_SCALAR=1 build/tools/bench_matvec 4864 896 1000
+  mode=L3-resident  effective_GBps=7.3417
+  mode=DRAM         effective_GBps=7.2303
+
+Step 0 comparison (old kernel, L3-resident-only, no DRAM mode existed yet):
+AVX2 8.9073 GB/s, scalar 6.0993 GB/s.
+AVX2 L3-resident: 8.91 -> 30.68 GB/s (3.44x). AVX2 DRAM: 21.74 GB/s (no
+step-0 baseline to compare against directly, but this is the number
+closest to real decode's streaming access pattern). Scalar barely moved
+(6.10 -> 7.34 GB/s), as expected: block_q8_0_act removes one of the two
+fp16 conversions even in the scalar path (one fewer mi_fp16_to_fp32 call
+per block), but the scalar path was never the target of this step.
+
+## 4. tools/bench_memread: AVX2 sequential-read-and-sum bandwidth ceiling
+
+(New tool per user request: memcpy's read+write traffic understates the
+ceiling for a read-dominated workload like Q8_0 decode -- 6-thread decode
+was already measured above memcpy's reported GB/s.)
+
+  $ build/tools/bench_memread $((2*1024*1024*1024)) <n_threads> 15
+  n_threads=1  effective_GBps=27.7963
+  n_threads=2  effective_GBps=40.0560
+  n_threads=3  effective_GBps=43.2409   <- peak
+  n_threads=4  effective_GBps=41.2234
+  n_threads=5  effective_GBps=35.8585
+  n_threads=6  effective_GBps=32.8419
+  n_threads=8  effective_GBps=29.9124
+  n_threads=12 effective_GBps=26.7761
+
+Read bandwidth peaks at 3-4 threads (~41-43 GB/s) then *declines* with more
+threads -- this machine's memory controller saturates well before all 12
+logical CPUs are busy; adding more threads past the peak adds contention,
+not throughput. This is a materially different shape than memcpy's ceiling
+(tools/bench_memcpy.cpp), which plateaus around 14-16 GB/s from 2 threads
+up (that number double-counts as read+write bus traffic for a read-mostly
+workload like Q8_0 decode, per the user's correction -- kept for the
+record, no longer treated as "the" ceiling).
+
+## 5. Decode tok/s, 1 and 6 threads (n_ctx=64, prompt_len=16, decode_len=8,
+   1 warmup + 5 repeats, mini_infer --bench) -- see opt_step1.csv for raw data
+
+| threads | step 0 median tok/s | step 1 median tok/s | speedup | step1 effective GB/s (tok/s * 531068416 / 1e9) |
+|---|---|---|---|---|
+| 1 | 15.407 (stage 4/5 baseline) | 33.832 | 2.196x | 17.97 |
+| 6 | 33.139 (stage 4/5 baseline) | 43.052 | 1.299x | 22.86 |
+
+(step 0 baseline numbers are stage 4/5's own bench_quant.py results, same
+machine, same GGUF, reused rather than re-measured, since step 0 did not
+touch any kernel; step 1's own decode measurement uses this session's
+mini_infer --bench with the same n_ctx/prompt_len/decode_len as
+bench_quant.py's methodology for a fair before/after comparison.)
+
+1-thread decode's effective bandwidth (17.97 GB/s) is now approaching
+1-thread's read-only ceiling (27.80 GB/s, section 4) -- much closer to
+memory-bound than step 0's 8.91 GB/s kernel-level number was. 6-thread
+decode (22.86 GB/s) is still well below the 3-4-thread read-bandwidth peak
+(~41-43 GB/s) -- most of that gap is not going to close by making the
+kernel faster still, since 1-thread kernel throughput is already close to
+1-thread's own bandwidth ceiling; the remaining 6-thread gap points at
+threading/barrier overhead (see docs/stage6.md's step-0 barrier count
+finding: 40.9% of barrier_wait calls in a decode step do zero work) as the
+next lever, which is what step 3 targets.
+
+## 6. Accuracy re-check: Q8_0 vs llama.cpp (scripts/compare_q8_llamacpp.py)
+
+Re-run after the block_q8_0_act change (activation scale is now full-
+precision float instead of round-tripped through fp16, so this is expected
+to shift slightly, not regress):
+
+  top1_agreement_rate: 0.983173  (409/416, was 404/416 = 0.9712 in stage 4)
+  cosine_similarity_mean: 0.999467  (was 0.999511)
+  cosine_similarity_min:  0.997556  (was 0.998201)
+  max_abs_error: 0.986804  (was 0.847039)
+  mean_abs_error: 0.086579  (was 0.079325)
+
+Mixed at the 3rd decimal (expected: this is now a structurally different
+quantization scheme for the activation than llama.cpp's own Q8_0, which
+also round-trips its activation scale through fp16 -- neither number set
+is "more correct", both are within the SPEC.md standard for this pair,
+which does not require bit-exactness). Full output overwrites
+bench/results/accuracy_q8_vs_llamacpp.txt (docs/stage4.md's historical
+numbers describe stage 4's implementation at the time and are left as-is).
+
+## 7. All existing tests: 10/10 pass, Release/Debug/Tsan (re-verified after
+   this step's changes; new tests added to tests/test_quant.cpp for
+   block_q8_0_act layout, mi_quantize_row_q8_0_act, and
+   mi_vec_dot_q8_0_wact scalar/avx2_f16c/avx2_lut/dispatcher equivalence).

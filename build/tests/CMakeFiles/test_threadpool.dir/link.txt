@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/test_threadpool.dir/test_threadpool.cpp.o -o test_threadpool  ../libmini_infer_core.a 

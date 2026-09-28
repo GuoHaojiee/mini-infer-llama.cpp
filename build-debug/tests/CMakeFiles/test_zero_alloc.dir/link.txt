@@ -1,0 +1,1 @@
+/usr/bin/c++ -O0 -g -Wl,--wrap=malloc -Wl,--wrap=free CMakeFiles/test_zero_alloc.dir/test_zero_alloc.cpp.o -o test_zero_alloc  ../libmini_infer_core.a 

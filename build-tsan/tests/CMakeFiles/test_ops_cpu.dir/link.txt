@@ -1,0 +1,1 @@
+/usr/bin/c++ -O1 -g -fsanitize=thread -fno-omit-frame-pointer -fsanitize=thread CMakeFiles/test_ops_cpu.dir/test_ops_cpu.cpp.o -o test_ops_cpu  ../libmini_infer_core.a 

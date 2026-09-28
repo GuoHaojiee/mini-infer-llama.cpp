@@ -1,0 +1,58 @@
+# decode tok/s -- mini-infer stage 4 quant-path comparison
+# f32_model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-f32.gguf
+# f16_model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-f16.gguf
+# q8_0_model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+# n_ctx: 64 prompt_len: 16 decode_len: 8
+# warmup: 1 repeats: 5
+# generated: 2026-09-28 23:03:17
+config,n_threads,rep,tok_per_s
+F32,1,0,2.8030
+F32,1,1,2.8030
+F32,1,2,2.8020
+F32,1,3,2.8010
+F32,1,4,2.8010
+F32,6,0,12.8960
+F32,6,1,12.8750
+F32,6,2,12.8310
+F32,6,3,12.8640
+F32,6,4,12.7890
+F16_scalar,1,0,0.6920
+F16_scalar,1,1,0.6920
+F16_scalar,1,2,0.6920
+F16_scalar,1,3,0.6920
+F16_scalar,1,4,0.6920
+F16_scalar,6,0,2.4220
+F16_scalar,6,1,2.4230
+F16_scalar,6,2,2.4190
+F16_scalar,6,3,2.4180
+F16_scalar,6,4,2.4200
+F16_avx2,1,0,17.1310
+F16_avx2,1,1,17.2400
+F16_avx2,1,2,17.2320
+F16_avx2,1,3,17.1690
+F16_avx2,1,4,17.1830
+F16_avx2,6,0,30.8600
+F16_avx2,6,1,30.5420
+F16_avx2,6,2,30.6590
+F16_avx2,6,3,29.9210
+F16_avx2,6,4,30.7730
+Q8_0_scalar,1,0,11.1740
+Q8_0_scalar,1,1,11.1710
+Q8_0_scalar,1,2,11.1420
+Q8_0_scalar,1,3,11.1560
+Q8_0_scalar,1,4,11.1350
+Q8_0_scalar,6,0,25.0480
+Q8_0_scalar,6,1,24.9240
+Q8_0_scalar,6,2,24.9420
+Q8_0_scalar,6,3,24.9170
+Q8_0_scalar,6,4,24.8670
+Q8_0_avx2,1,0,15.2870
+Q8_0_avx2,1,1,15.4710
+Q8_0_avx2,1,2,15.4070
+Q8_0_avx2,1,3,15.4660
+Q8_0_avx2,1,4,15.3790
+Q8_0_avx2,6,0,33.1390
+Q8_0_avx2,6,1,33.1470
+Q8_0_avx2,6,2,33.0800
+Q8_0_avx2,6,3,32.8280
+Q8_0_avx2,6,4,33.2740

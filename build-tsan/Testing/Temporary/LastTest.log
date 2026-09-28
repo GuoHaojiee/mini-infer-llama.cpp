@@ -1,0 +1,138 @@
+Start testing: Sep 29 01:13 CST
+----------------------------------------------------------
+1/9 Testing: tensor
+1/9 Test: tensor
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_tensor"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"tensor" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"tensor" end time: Sep 29 01:13 CST
+"tensor" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/9 Testing: context
+2/9 Test: context
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_context"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"context" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"context" end time: Sep 29 01:13 CST
+"context" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/9 Testing: gguf
+3/9 Test: gguf
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_gguf"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"gguf" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"gguf" end time: Sep 29 01:13 CST
+"gguf" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/9 Testing: graph
+4/9 Test: graph
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_graph"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"graph" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"graph" end time: Sep 29 01:13 CST
+"graph" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/9 Testing: gallocr
+5/9 Test: gallocr
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_gallocr"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"gallocr" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"gallocr" end time: Sep 29 01:13 CST
+"gallocr" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/9 Testing: ops_cpu
+6/9 Test: ops_cpu
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_ops_cpu"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"ops_cpu" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ops_cpu" end time: Sep 29 01:13 CST
+"ops_cpu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/9 Testing: threadpool
+7/9 Test: threadpool
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_threadpool"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"threadpool" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"threadpool" end time: Sep 29 01:13 CST
+"threadpool" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/9 Testing: quant
+8/9 Test: quant
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_quant"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"quant" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"quant" end time: Sep 29 01:13 CST
+"quant" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/9 Testing: model_qwen2
+9/9 Test: model_qwen2
+Command: "/usr/bin/setarch" "x86_64" "-R" "/home/guohaojie/Guo/mini-infer/build-tsan/tests/test_model_qwen2"
+Directory: /home/guohaojie/Guo/mini-infer/build-tsan/tests
+"model_qwen2" start time: Sep 29 01:13 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"model_qwen2" end time: Sep 29 01:13 CST
+"model_qwen2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 29 01:13 CST

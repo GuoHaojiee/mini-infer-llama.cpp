@@ -1,0 +1,150 @@
+# Stage 6 step 0: baseline measurement only, no code changes to any kernel.
+# Machine: AMD Ryzen 5 5600H (6C/12T, dual-channel DDR4), same machine as
+# stages 3-5 (see bench/results/threads_sysinfo.txt for full lscpu).
+# Compiler: g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0, -O3 Release build.
+# Generated: 2026-09-28 23:43 (perf) / 2026-09-29 (rest), this session.
+# Model: /home/guohaojie/Guo/mini-llama.cpp/models/qwen2.5-0.5b-instruct-q8_0.gguf
+#        (531068416 bytes, same file as stage 4/5 bench/results/model_sizes.txt)
+
+## 1. perf record -g, single-thread Q8_0 decode
+
+Command:
+  perf record -g -o perf_q8_1t.data -- \
+    build/mini_infer <q8_0.gguf> --prompt-ids <80 token ids> -c 256 -t 1 -n 64 --mulmat-mode static
+  perf report --stdio --no-children --sort=overhead,symbol
+
+perf_event_paranoid was temporarily lowered to 1 by the user for this
+measurement (this environment has no root/CAP_PERFMON otherwise).
+
+Top 10 by self time (40888 samples total):
+
+    46.37%  mi_fp16_to_fp32(unsigned short)
+    40.85%  mi_vec_dot_q8_0_q8_0_avx2(block_q8_0 const*, block_q8_0 const*, long)
+     5.64%  mi_compute_mul_mat(mi_tensor*, int, int)
+     1.43%  (anonymous namespace)::visit(mi_cgraph*, mi_tensor*)   [topo sort, graph build]
+     0.88%  mi_vec_dot_q8_0_q8_0(block_q8_0 const*, block_q8_0 const*, long)   [dispatcher]
+     0.57%  mi_quantize_row_q8_0(float const*, block_q8_0*, long)
+     0.36%  __expf_fma   [libm, called from mi_compute_softmax]
+     0.30%  __llrintf    [libm, called from mi_quantize_row_q8_0]
+     0.28%  mi_graph_build_forward_expand(mi_cgraph*, mi_tensor*)
+     0.24%  mi_compute_silu(mi_tensor*, int, int)
+
+Reading: mi_fp16_to_fp32 has NO callers other than the Q8_0 dot product path
+(quantize_row_q8_0 writes fp16 but never reads it back on this path), so its
+46.37% self time is entirely inside mi_vec_dot_q8_0_q8_0_avx2's per-block
+scale conversion. mul_mat's total (mi_compute_mul_mat + both vec_dot
+symbols + mi_fp16_to_fp32) is 46.37+40.85+5.64+0.88 = 93.74% of all samples.
+Every non-mul_mat op combined (softmax's exp, quantize's round-to-nearest,
+silu, graph build/topo-sort) is under 3%, well below the step 4 threshold
+("仅当 perf 显示占比 > 5% 时,再对 rms_norm/rope/softmax/attention 做...优化")
+so none of those are candidates yet.
+
+Full report saved at (not checked in, too large for git):
+  /tmp/claude-*/scratchpad/perf_q8_1t.data (3.16 GB raw, 40888 samples)
+
+## 2. Microbenchmark: Q8_0 matrix-vector multiply, k=4864 n=896, 1000 iters
+
+Shape matches blk.N.ffn_down.weight (k=4864, n=896) in this GGUF -- the
+largest single mul_mat weight matrix, decode m=1 (matrix-vector).
+Tool: build/tools/bench_matvec (new, tools/bench_matvec.cpp), calls
+mi_vec_dot_q8_0_q8_0 directly in a loop, bypassing graph/gallocr/threadpool
+entirely -- isolates the kernel's own throughput.
+
+  $ build/tools/bench_matvec 4864 896 1000
+  k=4864 n=896 iters=1000 secs=0.519859 weight_bytes_per_iter=4630528 effective_GBps=8.9073 effective_GFLOPs=16.7666 out0=30.713892
+
+  $ MI_QUANT_FORCE_SCALAR=1 build/tools/bench_matvec 4864 896 1000
+  k=4864 n=896 iters=1000 secs=0.759189 weight_bytes_per_iter=4630528 effective_GBps=6.0993 effective_GFLOPs=11.4811 out0=30.713892
+
+effective_GBps formula: n_rows * (k/32 blocks * 34 bytes/block) * iters / secs / 1e9
+(weight matrix bytes streamed once per iteration; activation vector and
+output are negligible and reused/resident).
+
+## 3. memcpy achievable bandwidth
+
+Tool: build/tools/bench_memcpy (new, tools/bench_memcpy.cpp). Each thread
+copies an independent, non-overlapping slice of one 512 MiB src/dst buffer
+pair; 1 warmup + 20 timed iterations.
+
+  $ build/tools/bench_memcpy 536870912 1 20
+  total_bytes=536870912 n_threads=1 iters=20 secs=0.830349 effective_GBps=12.9312
+
+  $ build/tools/bench_memcpy 536870912 2 20
+  total_bytes=536870912 n_threads=2 iters=20 secs=0.733106 effective_GBps=14.6465
+
+  $ build/tools/bench_memcpy 536870912 4 20
+  total_bytes=536870912 n_threads=4 iters=20 secs=0.679183 effective_GBps=15.8093
+
+  $ build/tools/bench_memcpy 536870912 6 20
+  total_bytes=536870912 n_threads=6 iters=20 secs=0.722583 effective_GBps=14.8598
+
+  $ build/tools/bench_memcpy 536870912 12 20
+  total_bytes=536870912 n_threads=12 iters=20 secs=0.743451 effective_GBps=14.4427
+
+effective_GBps formula: total_bytes * iters / secs / 1e9, where total_bytes
+counts ONE of the two buffers (i.e. this is "bytes copied", not "bytes of
+bus traffic" -- a memcpy of N bytes reads N and writes N, so bus traffic is
+2x this number if that's the comparison you want). Repeated at 1 GiB/30
+iters gave the same plateau (see conversation record): 1t=12.81, 2t=14.98,
+4t=16.27 GB/s.
+
+## 4. objdump: mi_vec_dot_q8_0_q8_0_avx2 (quant_avx2.cpp.o)
+
+Command: objdump -d --no-show-raw-insn build/.../quant_avx2.cpp.o
+
+Findings (full disassembly in git history of this file / re-derivable from
+the build):
+  - 2 `call` instructions inside the per-block loop (confirmed via `grep -c
+    call`) -- these are the two mi_fp16_to_fp32(x[i].d) / mi_fp16_to_fp32(y[i].d)
+    calls. mi_fp16_to_fp32 is defined in quant.cpp, a different translation
+    unit, with no inline hint and no LTO enabled, so the compiler cannot
+    inline it across the TU boundary -- matches perf's 46.37% finding above
+    exactly (it's a real function-call boundary, not just "a lot of scalar
+    work").
+  - 0 occurrences of vcvtph2ps/vcvtps2ph (F16C) anywhere in this function --
+    the scale-factor conversion never uses hardware F16C despite this file
+    already using F16C elsewhere (mi_vec_dot_f16_f32_avx2, which does use
+    _mm256_cvtph_ps). This confirms suspicion #4's "软件位运算转换" framing
+    literally: the Q8_0 path's fp16 scales go through the portable bit-twiddling
+    path, not hardware conversion.
+  - Horizontal sum (the vpshufd/vpaddd sequence that reduces the int32
+    accumulator to a scalar) appears once per block iteration (inside the
+    loop, right after vpmaddwd), not once per row after accumulating all
+    blocks in a vector register -- confirms suspicion #3 (Q8_0 point).
+  - vfmadd231ss (scalar FMA) is used for the per-block float accumulate --
+    FMA is in use, this part is not the bottleneck.
+
+## 5. Barrier / no-compute-node count, one decode step
+
+Tool: `build/mini_infer <q8_0.gguf> --prompt-ids ids.txt -c 64 -t 1 \
+  --graph-stats --dump-n-past 19` (new --graph-stats CLI flag, main.cpp;
+new mi_qwen2_forward_params::out_graph hook, model_qwen2.h/.cpp -- both
+additive, default nullptr, zero effect on any existing caller/test).
+
+  n_ctx=64 n_tokens=1 n_past=19 n_nodes=3461 n_nop_nodes=1416
+    get_rows         1
+    rms_norm         49
+    mul              73
+    add              120
+    mul_mat          841
+    rope             48
+    softmax          336
+    silu             24
+    cpy              384
+    quantize_q8_0    169
+    reshape          72
+    view             1008
+    transpose        336
+
+One barrier_wait call happens per g->nodes entry (threadpool.cpp's
+run_current_graph calls barrier_wait once after every node, unconditionally
+-- see src/threadpool.cpp), so n_nodes *is* the number of barrier_wait calls
+for one decode step: 3461. n_nop_nodes = reshape + view + transpose (these
+three ops move no data, see ops_cpu.cpp's mi_compute_forward default case)
+= 72 + 1008 + 336 = 1416, i.e. 1416/3461 = 40.9% of all barrier_wait calls
+in a decode step are for a node that did zero computation.
+(mul_mat=841, quantize_q8_0=169: 7 Q8_0-weighted mul_mat per layer x 24
+layers + 1 final lm_head = 169 quantize nodes, matching model_qwen2.cpp's
+"每层最多 7 个 mul_mat 各带一个量化节点" comment; the other 672 mul_mat
+nodes are the 2 F32xF32 attention matmuls (QK^T, attn x V) computed
+per-head, 14 heads x 2 x 24 layers = 672, 672+169=841.)

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmini_infer_core.a CMakeFiles/mini_infer_core.dir/src/tensor.cpp.o CMakeFiles/mini_infer_core.dir/src/context.cpp.o CMakeFiles/mini_infer_core.dir/src/gguf.cpp.o CMakeFiles/mini_infer_core.dir/src/graph.cpp.o CMakeFiles/mini_infer_core.dir/src/gallocr.cpp.o CMakeFiles/mini_infer_core.dir/src/ops_cpu.cpp.o CMakeFiles/mini_infer_core.dir/src/threadpool.cpp.o CMakeFiles/mini_infer_core.dir/src/quant.cpp.o CMakeFiles/mini_infer_core.dir/src/quant_avx2.cpp.o CMakeFiles/mini_infer_core.dir/src/model_qwen2.cpp.o
+/usr/bin/ranlib libmini_infer_core.a

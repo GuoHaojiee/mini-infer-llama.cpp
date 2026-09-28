@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/llama_logits.dir/llama_logits.cpp.o -o llama_logits   -L/home/guohaojie/Guo/mini-infer/../mini-llama.cpp/third_party/llama.cpp/build/bin  -Wl,-rpath,/home/guohaojie/Guo/mini-infer/../mini-llama.cpp/third_party/llama.cpp/build/bin -lllama -lggml -lggml-base -lggml-cpu 

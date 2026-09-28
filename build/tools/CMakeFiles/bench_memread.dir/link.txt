@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/bench_memread.dir/bench_memread.cpp.o -o bench_memread 

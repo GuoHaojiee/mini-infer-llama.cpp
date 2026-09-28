@@ -1,0 +1,1 @@
+/usr/bin/c++ -O1 -g -fsanitize=thread -fno-omit-frame-pointer -fsanitize=thread CMakeFiles/mini_infer.dir/src/main.cpp.o -o mini_infer  libmini_infer_core.a 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/test_gguf.dir/test_gguf.cpp.o -o test_gguf  ../libmini_infer_core.a 

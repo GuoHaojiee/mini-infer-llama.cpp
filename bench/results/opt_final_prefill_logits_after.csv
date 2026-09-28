@@ -1,0 +1,19 @@
+# Stage 6 wrap-up: prefill speed, before/after last_logits_only optimization
+# Q8_0, n_ctx=1024, n_threads=4, 1 warmup + 5 repeats
+# generated: 2026-09-29 01:01:21
+prefill_len,rep,prefill_tok_per_s
+128,1,126.551
+128,2,126.442
+128,3,126.215
+128,4,125.914
+128,5,125.990
+512,1,77.041
+512,2,76.964
+512,3,77.061
+512,4,77.259
+512,5,76.819
+1024,1,46.805
+1024,2,46.855
+1024,3,46.968
+1024,4,46.905
+1024,5,46.852

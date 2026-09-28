@@ -1,0 +1,1 @@
+/usr/bin/c++ -O0 -g CMakeFiles/mi_dump.dir/dump.cpp.o -o mi_dump  ../libmini_infer_core.a 
